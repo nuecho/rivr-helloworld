@@ -1,0 +1,44 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+repositories { 
+  maven { url 'http://knox.s.nuecho.com/artifactory/libs-release' } 
+  ivy { url 'http://knox.s.nuecho.com/artifactory/libs-release' } 
+}
+
+sourceCompatibility = '1.6'
+
+dependencies {
+  compile 'com.nuecho:rivr-voicexml:0.1.0'
+  providedCompile 'javax.servlet:servlet-api:2.5'
+  testCompile 'junit:junit:4.10'
+  runtime 'ch.qos.logback:logback-classic:0.9.18'
+  runtime 'org.glassfish:javax.json:1.0-b06'
+}
+
+eclipse{
+  classpath {
+    defaultOutputDir = file("${project.projectDir}/build/classes")
+      containers.clear()
+      containers.add("org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6")
+  }
+}
+
+task wrapper(type: Wrapper) { gradleVersion = '1.5' }
+
+import org.gradle.api.plugins.jetty.internal.Monitor
+
+jettyRunWar {
+  daemon = true
+} << {
+  // Workaround for bug http://issues.gradle.org/browse/GRADLE-2263
+  if (getStopPort() != null && getStopPort() > 0 && getStopKey() != null) {
+    Monitor monitor = new Monitor(getStopPort(), getStopKey(), server.getProxiedObject());
+    monitor.start();
+  }
+}
+
+[jettyRun, jettyRunWar,jettyStop]*.stopPort = 6666
+[jettyRun, jettyRunWar,jettyStop]*.stopKey = 'stopKey'
