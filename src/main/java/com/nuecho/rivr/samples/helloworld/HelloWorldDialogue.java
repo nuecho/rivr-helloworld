@@ -27,7 +27,10 @@ import com.nuecho.rivr.voicexml.util.json.*;
  */
 public final class HelloWorldDialogue implements VoiceXmlDialogue {
 
+    private static final String DIALOG_ID_MDC_KEY = "dialogId";
+
     private final Logger mLog = LoggerFactory.getLogger(getClass());
+    private final Logger mDialogLog = LoggerFactory.getLogger("my.dialog");
 
     private static final String STATUS_PROPERTY = "status";
     private static final String STATUS_ERROR = "error";
@@ -36,24 +39,31 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
 
     private static final String CAUSE_PROPERTY = "cause";
 
-    private static final String VICTORY_MESSAGE_RECORDING_LOCATION = "application.victoryMessage";
-
     @Override
     public VoiceXmlLastTurn run(VoiceXmlFirstTurn firstTurn, VoiceXmlDialogueContext context) throws Exception {
 
-        extractClidAndDnis(context);
+        MDC.put(DIALOG_ID_MDC_KEY, context.getDialogueId());
+
+        mDialogLog.info("Starting dialogue");
 
         String status;
         JsonObjectBuilder resultObjectBuilder = JsonUtils.createObjectBuilder();
         try {
-            mLog.info("Starting dialogue " + context.getDialogueId());
+            mLog.trace("Extracting Clid and DNIS.");
+            JsonObject object = extractClidAndDnis(context);
+            if (object != null) {
+                String clid = object.getString("clid");
+                String dnis = object.getString("dnis");
+                mDialogLog.info("CLID: {}, DNIS: {}", clid, dnis);
+            }
+
             playHelloWorldMessage(context);
             status = STATUS_SUCCESS;
         } catch (InterruptedException exception) {
             Thread.currentThread().interrupt();
             status = STATUS_INTERRUPTED;
         } catch (Exception exception) {
-            mLog.error("Error during dialogue", exception);
+            mDialogLog.error("Error during dialogue", exception);
             status = STATUS_ERROR;
             JsonUtils.add(resultObjectBuilder, CAUSE_PROPERTY, ResultUtils.toJson(exception));
             return new VoiceXmlReturnTurn(STATUS_ERROR, "com.nuecho.rivr", null);
@@ -61,14 +71,13 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
 
         JsonUtils.add(resultObjectBuilder, STATUS_PROPERTY, status);
         VariableDeclarationList variables = VariableDeclarationList.create(resultObjectBuilder.build());
-        variables.addVariable(new VariableDeclaration("recording", VICTORY_MESSAGE_RECORDING_LOCATION));
 
-        mLog.info("Ending dialogue " + context.getDialogueId());
+        mDialogLog.info("Ending dialogue " + context.getDialogueId());
         return new VoiceXmlReturnTurn("result", variables);
     }
 
-    private void extractClidAndDnis(VoiceXmlDialogueContext context) throws Timeout, InterruptedException, HangUp,
-            PlatformError {
+    private JsonObject extractClidAndDnis(VoiceXmlDialogueContext context) throws Timeout, InterruptedException,
+            HangUp, PlatformError {
         ScriptExecutionTurn clidAndDnisTurn = new ScriptExecutionTurn("clidAndDnis");
         VariableDeclarationList clidAndDnisVariables = new VariableDeclarationList();
         clidAndDnisVariables.addVariable(new VariableDeclaration("clid", "session.connection.remote.uri"));
@@ -78,12 +87,7 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
         VoiceXmlInputTurn inputTurn = processTurn(clidAndDnisTurn, context);
         JsonObject result = (JsonObject) inputTurn.getJsonValue();
 
-        if (result != null) {
-            String clid = result.getString("clid");
-            String dnis = result.getString("dnis");
-            context.getLogger().info("CLID: {}, DNIS: {}", clid, dnis);
-        }
-
+        return result;
     }
 
     private VoiceXmlInputTurn processTurn(VoiceXmlOutputTurn outputTurn, VoiceXmlDialogueContext context)

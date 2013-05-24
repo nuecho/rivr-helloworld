@@ -14,17 +14,17 @@
 
     <init-param>
       <param-name>dialogueFactory.class</param-name>
-      <param-value>com.nuecho.rivr.samples.helloworld.dialogue.TestDialogueFactory</param-value>
+      <param-value>com.nuecho.rivr.samples.helloworld.HelloWorldDialogueFactory</param-value>
     </init-param>
 
     <init-param>
       <param-name>dialogue.class</param-name>
-      <param-value>com.nuecho.rivr.samples.helloworld.dialogue.TestDialogue</param-value>
+      <param-value>com.nuecho.rivr.samples.helloworld.HelloWorldDialogue</param-value>
     </init-param>
 
     <init-param>
       <param-name>loggerFactory.class</param-name>
-      <param-value>org.slf4j.impl.Log4jLoggerFactory</param-value>
+      <param-value>ch.qos.logback.classic.LoggerContext</param-value>
     </init-param>
 
     <init-param>

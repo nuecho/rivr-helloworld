@@ -2,6 +2,7 @@
 
   <!-- this date pattern conform to ISO date format -->
   <property name="DEFAULT_PATTERN" value="[%d{yyyy-MM-dd}T%d{HH:mm:ss.SSSZ}] [%p] [%c] %m%n" />
+  <property name="DIALOG_PATTERN" value="[%d{yyyy-MM-dd}T%d{HH:mm:ss.SSSZ}] [%p] [%X{dialogId}] %m%n" />
 
   <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
@@ -9,8 +10,28 @@
     </encoder>
   </appender>
 
+  <appender name="logglyAppender" class="ch.qos.logback.ext.loggly.LogglyAppender">
+    <inputKey>c37722db-078d-4630-9681-154f40ebc60e</inputKey>
+    <pattern>${DIALOG_PATTERN}</pattern>
+  </appender>
+
+  <logger name="com.nuecho.rivr">
+    <level value="TRACE" />
+  </logger>
+
+  <!--
+  This logger logs dialog related information over loggly using dialogId within the log format. Such as
+  [2013-05-24T18:05:25.077-0400] [INFO] [f18cac39-89c2-4ae1-b73a-71895ebc7f40] Starting dialogue  
+   -->  
+  <logger name="my.dialog">
+    <level value="TRACE" />
+    <appender-ref ref="logglyAppender" />
+  </logger>
+
   <root level="TRACE">
     <appender-ref ref="consoleAppender" />
   </root>
 
 </configuration>
+
+
