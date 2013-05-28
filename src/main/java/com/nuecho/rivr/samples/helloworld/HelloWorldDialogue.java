@@ -17,7 +17,6 @@ import com.nuecho.rivr.voicexml.turn.first.*;
 import com.nuecho.rivr.voicexml.turn.input.*;
 import com.nuecho.rivr.voicexml.turn.last.*;
 import com.nuecho.rivr.voicexml.turn.output.*;
-import com.nuecho.rivr.voicexml.turn.output.audio.*;
 import com.nuecho.rivr.voicexml.turn.output.interaction.*;
 import com.nuecho.rivr.voicexml.util.*;
 import com.nuecho.rivr.voicexml.util.json.*;
@@ -71,7 +70,6 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
 
         JsonUtils.add(resultObjectBuilder, STATUS_PROPERTY, status);
         VariableDeclarationList variables = VariableDeclarationList.create(resultObjectBuilder.build());
-
         mDialogLog.info("Ending dialogue " + context.getDialogueId());
         return new VoiceXmlReturnTurn("result", variables);
     }
@@ -79,6 +77,7 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
     private JsonObject extractClidAndDnis(VoiceXmlDialogueContext context) throws Timeout, InterruptedException,
             HangUp, PlatformError {
         ScriptExecutionTurn clidAndDnisTurn = new ScriptExecutionTurn("clidAndDnis");
+
         VariableDeclarationList clidAndDnisVariables = new VariableDeclarationList();
         clidAndDnisVariables.addVariable(new VariableDeclaration("clid", "session.connection.remote.uri"));
         clidAndDnisVariables.addVariable(new VariableDeclaration("dnis", "session.connection.local.uri"));
@@ -105,9 +104,7 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
 
     private void playHelloWorldMessage(VoiceXmlDialogueContext context) throws Timeout, InterruptedException, HangUp,
             PlatformError {
-        InteractionBuilder builder = new InteractionBuilder("playMessage");
-        builder.addPrompt(new SynthesisText("Hello World!"));
-        processTurn(builder.build(), context);
+        InteractionTurn turn = FuentInteractionBuilder.newInteraction("playMessage").addPrompt("Hello World!").build();
+        processTurn(turn, context);
     }
-
 }
