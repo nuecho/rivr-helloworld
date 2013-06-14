@@ -3,6 +3,8 @@ apply plugin: 'eclipse'
 apply plugin: 'war'
 apply plugin: 'jetty'
 
+version = "0.0.3"
+
 repositories { 
   maven { url 'http://knox.s.nuecho.com/artifactory/libs-release' } 
   ivy { url 'http://knox.s.nuecho.com/artifactory/libs-release' } 
@@ -11,7 +13,7 @@ repositories {
 sourceCompatibility = '1.6'
 
 dependencies {
-  compile 'com.nuecho:rivr-voicexml:0.2.0'
+  compile 'com.nuecho:rivr-voicexml:0.2.1.1'
   providedCompile 'javax.servlet:servlet-api:2.5'
   testCompile 'junit:junit:4.10'
   runtime 'org.glassfish:javax.json:1.0-b06'
@@ -24,6 +26,13 @@ eclipse{
       containers.clear()
       containers.add("org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6")
   }
+}
+war {
+  manifest.mainAttributes(
+    'Implementation-Title': 'rivr-hello-world',
+    'Implementation-Version': version,
+    'Implementation-Vendor': 'Nu Echo Inc.' 
+  )
 }
 
 task wrapper(type: Wrapper) { gradleVersion = '1.5' }

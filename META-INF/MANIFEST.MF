@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Implementation-Title: rivr-hello-world
+Implementation-Version: 0.0.3
+Implementation-Vendor: Nu Echo Inc.
+
