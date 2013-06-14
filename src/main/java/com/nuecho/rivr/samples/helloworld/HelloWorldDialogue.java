@@ -65,13 +65,14 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
             mDialogLog.error("Error during dialogue", exception);
             status = STATUS_ERROR;
             JsonUtils.add(resultObjectBuilder, CAUSE_PROPERTY, ResultUtils.toJson(exception));
-            return new VoiceXmlReturnTurn(STATUS_ERROR, "com.nuecho.rivr", null);
+            return new VoiceXmlExitTurn(STATUS_ERROR, "com.nuecho.rivr");
         }
 
         JsonUtils.add(resultObjectBuilder, STATUS_PROPERTY, status);
         VariableDeclarationList variables = VariableDeclarationList.create(resultObjectBuilder.build());
-        mDialogLog.info("Ending dialogue " + context.getDialogueId());
-        return new VoiceXmlReturnTurn("result", variables);
+        mDialogLog.info("Ending dialogue");
+
+        return new VoiceXmlExitTurn("result", variables);
     }
 
     private JsonObject extractClidAndDnis(VoiceXmlDialogueContext context) throws Timeout, InterruptedException,
