@@ -23,13 +23,14 @@
   This logger logs dialog related information over loggly using dialogId within the log format. Such as
   [2013-05-24T18:05:25.077-0400] [INFO] [f18cac39-89c2-4ae1-b73a-71895ebc7f40] Starting dialogue  
    -->  
-  <logger name="my.dialog">
+  <logger name="hello.world">
     <level value="TRACE" />
     <appender-ref ref="logglyAppender" />
   </logger>
 
   <root level="TRACE">
     <appender-ref ref="consoleAppender" />
+    <appender-ref ref="logglyAppender" />
   </root>
 
 </configuration>

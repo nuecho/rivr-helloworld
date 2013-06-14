@@ -29,7 +29,7 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
     private static final String DIALOG_ID_MDC_KEY = "dialogId";
 
     private final Logger mLog = LoggerFactory.getLogger(getClass());
-    private final Logger mDialogLog = LoggerFactory.getLogger("my.dialog");
+    private final Logger mDialogLog = LoggerFactory.getLogger("hello.world");
 
     private static final String STATUS_PROPERTY = "status";
     private static final String STATUS_ERROR = "error";
