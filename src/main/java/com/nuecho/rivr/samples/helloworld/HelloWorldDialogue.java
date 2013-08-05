@@ -19,6 +19,7 @@ import com.nuecho.rivr.voicexml.turn.output.audio.*;
 import com.nuecho.rivr.voicexml.turn.output.interaction.*;
 import com.nuecho.rivr.voicexml.util.*;
 import com.nuecho.rivr.voicexml.util.json.*;
+import static com.nuecho.rivr.voicexml.turn.output.interaction.InteractionBuilder.*;
 
 /**
  * @author Nu Echo Inc.
@@ -38,7 +39,7 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
 
         JsonObjectBuilder resultObjectBuilder = JsonUtils.createObjectBuilder();
         try {
-            InteractionBuilder interactionBuilder = new InteractionBuilder("hello");
+            InteractionBuilder interactionBuilder = newInteractionBuilder("hello");
             interactionBuilder.addPrompt(new SynthesisText("Hello World!"));
             InteractionTurn turn = interactionBuilder.build();
             VoiceXmlInputTurn inputTurn = DialogueUtils.doTurn(context, turn);
