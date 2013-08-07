@@ -13,18 +13,8 @@
     <servlet-class>com.nuecho.rivr.voicexml.servlet.VoiceXmlDialogueServlet</servlet-class>
 
     <init-param>
-      <param-name>dialogueFactory.class</param-name>
-      <param-value>com.nuecho.rivr.samples.helloworld.HelloWorldDialogueFactory</param-value>
-    </init-param>
-
-    <init-param>
       <param-name>dialogue.class</param-name>
       <param-value>com.nuecho.rivr.samples.helloworld.HelloWorldDialogue</param-value>
-    </init-param>
-
-    <init-param>
-      <param-name>loggerFactory.class</param-name>
-      <param-value>ch.qos.logback.classic.LoggerContext</param-value>
     </init-param>
 
     <init-param>

@@ -20,7 +20,8 @@ import com.nuecho.rivr.voicexml.turn.output.interaction.*;
 import com.nuecho.rivr.voicexml.util.*;
 import com.nuecho.rivr.voicexml.util.json.*;
 import static com.nuecho.rivr.voicexml.turn.output.interaction.InteractionBuilder.*;
-
+import static com.nuecho.rivr.voicexml.util.json.JsonUtils.*;
+import static com.nuecho.rivr.voicexml.turn.input.VoiceXmlEvent.*;
 /**
  * @author Nu Echo Inc.
  */
@@ -37,23 +38,23 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
 
         mDialogLog.info("Starting dialogue");
 
+        JsonValue cause = wrap("Normal");
         JsonObjectBuilder resultObjectBuilder = JsonUtils.createObjectBuilder();
         try {
-            InteractionBuilder interactionBuilder = newInteractionBuilder("hello");
-            interactionBuilder.addPrompt(new SynthesisText("Hello World!"));
-            InteractionTurn turn = interactionBuilder.build();
+            InteractionTurn turn = newInteractionBuilder("hello").addPrompt(new SynthesisText("Hello World!")).build();
             VoiceXmlInputTurn inputTurn = DialogueUtils.doTurn(context, turn);
-            if (VoiceXmlEvent.hasEvent(VoiceXmlEvent.CONNECTION_DISCONNECT_HANGUP, inputTurn.getEvents()))
-                throw new HangUp();
-            if (VoiceXmlEvent.hasEvent(VoiceXmlEvent.ERROR, inputTurn.getEvents()))
-                throw new PlatformError(inputTurn.getEvents().get(0).getMessage());
+            if (hasEvent(CONNECTION_DISCONNECT_HANGUP, inputTurn.getEvents()))
+                cause = wrap("Hangup");
+            if (hasEvent(ERROR, inputTurn.getEvents()))
+                cause = wrap(inputTurn.getEvents().get(0).getMessage());
         } catch (InterruptedException exception) {
             Thread.currentThread().interrupt();
+            cause = wrap("Interupted");
         } catch (Exception exception) {
             mDialogLog.error("Error during dialogue", exception);
-            JsonUtils.add(resultObjectBuilder, CAUSE_PROPERTY, ResultUtils.toJson(exception));
+            cause = ResultUtils.toJson(exception);
         }
-
+        resultObjectBuilder.add(CAUSE_PROPERTY, cause);
         VariableDeclarationList variables = VariableDeclarationList.create(resultObjectBuilder.build());
         mDialogLog.info("Ending dialogue");
 
