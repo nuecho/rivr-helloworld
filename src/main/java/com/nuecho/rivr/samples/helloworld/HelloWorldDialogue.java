@@ -33,30 +33,38 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
 
     @Override
     public VoiceXmlLastTurn run(VoiceXmlFirstTurn firstTurn, VoiceXmlDialogueContext context) throws Exception {
-
+        // Just some logging stuff.
         MDC.put(DIALOG_ID_MDC_KEY, context.getDialogueId());
 
-        mDialogLog.info("Starting dialogue");
-
+        // The dialog termination cause. "Normal" by default.
         JsonValue cause = wrap("Normal");
-        JsonObjectBuilder resultObjectBuilder = JsonUtils.createObjectBuilder();
+
+        mDialogLog.info("Starting dialog");
         try {
+            // Play a prompt
             InteractionTurn turn = newInteractionBuilder("hello").addPrompt(new SynthesisText("Hello World!")).build();
             VoiceXmlInputTurn inputTurn = DialogueUtils.doTurn(context, turn);
-            if (hasEvent(CONNECTION_DISCONNECT_HANGUP, inputTurn.getEvents()))
+
+            // Handling hangup or error events
+            if (hasEvent(CONNECTION_DISCONNECT_HANGUP, inputTurn.getEvents())) {
                 cause = wrap("Hangup");
-            if (hasEvent(ERROR, inputTurn.getEvents()))
+            }
+            if (hasEvent(ERROR, inputTurn.getEvents())) {
                 cause = wrap(inputTurn.getEvents().get(0).getMessage());
+            }
         } catch (InterruptedException exception) {
             Thread.currentThread().interrupt();
-            cause = wrap("Interupted");
+            cause = wrap("Interrupted");
         } catch (Exception exception) {
-            mDialogLog.error("Error during dialogue", exception);
+            mDialogLog.error("Error during dialog", exception);
             cause = ResultUtils.toJson(exception);
         }
+        mDialogLog.info("Ending dialog");
+
+        // Build the JSON result returned to the calling application/context.
+        JsonObjectBuilder resultObjectBuilder = JsonUtils.createObjectBuilder();
         resultObjectBuilder.add(CAUSE_PROPERTY, cause);
         VariableDeclarationList variables = VariableDeclarationList.create(resultObjectBuilder.build());
-        mDialogLog.info("Ending dialogue");
 
         return new VoiceXmlExitTurn("result", variables);
     }
