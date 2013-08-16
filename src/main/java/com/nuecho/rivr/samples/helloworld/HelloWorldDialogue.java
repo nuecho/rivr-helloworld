@@ -4,6 +4,10 @@
 
 package com.nuecho.rivr.samples.helloworld;
 
+import static com.nuecho.rivr.voicexml.turn.input.VoiceXmlEvent.*;
+import static com.nuecho.rivr.voicexml.turn.output.interaction.InteractionBuilder.*;
+import static com.nuecho.rivr.voicexml.util.json.JsonUtils.*;
+
 import javax.json.*;
 
 import org.slf4j.*;
@@ -19,23 +23,17 @@ import com.nuecho.rivr.voicexml.turn.output.audio.*;
 import com.nuecho.rivr.voicexml.turn.output.interaction.*;
 import com.nuecho.rivr.voicexml.util.*;
 import com.nuecho.rivr.voicexml.util.json.*;
-import static com.nuecho.rivr.voicexml.turn.output.interaction.InteractionBuilder.*;
-import static com.nuecho.rivr.voicexml.util.json.JsonUtils.*;
-import static com.nuecho.rivr.voicexml.turn.input.VoiceXmlEvent.*;
+
 /**
  * @author Nu Echo Inc.
  */
 public final class HelloWorldDialogue implements VoiceXmlDialogue {
 
-    private static final String DIALOG_ID_MDC_KEY = "dialogId";
     private static final String CAUSE_PROPERTY = "cause";
-    private final Logger mDialogLog = LoggerFactory.getLogger("hello.world");
+    private final Logger mDialogueLog = LoggerFactory.getLogger("hello-world");
 
     @Override
     public VoiceXmlLastTurn run(VoiceXmlFirstTurn firstTurn, VoiceXmlDialogueContext context) throws Exception {
-        // Just some logging stuff.
-        MDC.put(DIALOG_ID_MDC_KEY, context.getDialogueId());
-
         // The dialogue termination cause. "Normal" by default.
         JsonValue cause = wrap("Normal");
 
