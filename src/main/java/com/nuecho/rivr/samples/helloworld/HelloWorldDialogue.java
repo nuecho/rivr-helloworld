@@ -36,10 +36,10 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
         // Just some logging stuff.
         MDC.put(DIALOG_ID_MDC_KEY, context.getDialogueId());
 
-        // The dialog termination cause. "Normal" by default.
+        // The dialogue termination cause. "Normal" by default.
         JsonValue cause = wrap("Normal");
 
-        mDialogLog.info("Starting dialog");
+        mDialogueLog.info("Starting dialogue");
         try {
             // Play a prompt
             InteractionTurn turn = newInteractionBuilder("hello").addPrompt(new SynthesisText("Hello World!")).build();
@@ -56,10 +56,10 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
             Thread.currentThread().interrupt();
             cause = wrap("Interrupted");
         } catch (Exception exception) {
-            mDialogLog.error("Error during dialog", exception);
+            mDialogueLog.error("Error during dialogue execution", exception);
             cause = ResultUtils.toJson(exception);
         }
-        mDialogLog.info("Ending dialog");
+        mDialogueLog.info("Ending dialogue");
 
         // Build the JSON result returned to the calling application/context.
         JsonObjectBuilder resultObjectBuilder = JsonUtils.createObjectBuilder();
