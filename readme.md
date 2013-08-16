@@ -20,4 +20,3 @@ Gradle project handling within Eclipse requires the [Gradle plugin]()
 ### Note
 
 You may also directly import the Gradle project from **File** > **Import** > **Gradle** > **Gradle Project**
-java -Dcom.sun.management.jmxremote -Xdebug -Xnoagent -server -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -jar /Users/pdeschen/git/nuecho/dev/modules/thirdparty/jetty-runner/lib/jetty-runner-7.0.2.v20100331.jar --path hello-world build/libs/hello-world.war 
