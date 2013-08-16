@@ -1,7 +1,7 @@
 apply plugin: 'eclipse'
 apply plugin: 'jetty'
 
-version = "0.9.1"
+version = "0.9.2"
 
 repositories { 
   mavenCentral() 
@@ -14,7 +14,7 @@ dependencies {
   providedCompile 'javax.servlet:servlet-api:2.5'
   testCompile 'junit:junit:4.10'
   runtime 'org.glassfish:javax.json:1.0.1'
-  runtime 'org.logback-extensions:logback-ext-loggly:0.1.1'
+  runtime 'ch.qos.logback:logback-classic:1.0.13'
 }
 
 eclipse{

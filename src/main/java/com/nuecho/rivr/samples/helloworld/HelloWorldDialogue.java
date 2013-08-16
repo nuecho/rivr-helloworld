@@ -4,6 +4,10 @@
 
 package com.nuecho.rivr.samples.helloworld;
 
+import static com.nuecho.rivr.voicexml.turn.input.VoiceXmlEvent.*;
+import static com.nuecho.rivr.voicexml.turn.output.interaction.InteractionBuilder.*;
+import static com.nuecho.rivr.voicexml.util.json.JsonUtils.*;
+
 import javax.json.*;
 
 import org.slf4j.*;
@@ -19,27 +23,21 @@ import com.nuecho.rivr.voicexml.turn.output.audio.*;
 import com.nuecho.rivr.voicexml.turn.output.interaction.*;
 import com.nuecho.rivr.voicexml.util.*;
 import com.nuecho.rivr.voicexml.util.json.*;
-import static com.nuecho.rivr.voicexml.turn.output.interaction.InteractionBuilder.*;
-import static com.nuecho.rivr.voicexml.util.json.JsonUtils.*;
-import static com.nuecho.rivr.voicexml.turn.input.VoiceXmlEvent.*;
+
 /**
  * @author Nu Echo Inc.
  */
 public final class HelloWorldDialogue implements VoiceXmlDialogue {
 
-    private static final String DIALOG_ID_MDC_KEY = "dialogId";
     private static final String CAUSE_PROPERTY = "cause";
-    private final Logger mDialogLog = LoggerFactory.getLogger("hello.world");
+    private final Logger mDialogueLog = LoggerFactory.getLogger("hello-world");
 
     @Override
     public VoiceXmlLastTurn run(VoiceXmlFirstTurn firstTurn, VoiceXmlDialogueContext context) throws Exception {
-        // Just some logging stuff.
-        MDC.put(DIALOG_ID_MDC_KEY, context.getDialogueId());
-
-        // The dialog termination cause. "Normal" by default.
+        // The dialogue termination cause. "Normal" by default.
         JsonValue cause = wrap("Normal");
 
-        mDialogLog.info("Starting dialog");
+        mDialogueLog.info("Starting dialogue");
         try {
             // Play a prompt
             InteractionTurn turn = newInteractionBuilder("hello").addPrompt(new SynthesisText("Hello World!")).build();
@@ -56,10 +54,10 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
             Thread.currentThread().interrupt();
             cause = wrap("Interrupted");
         } catch (Exception exception) {
-            mDialogLog.error("Error during dialog", exception);
+            mDialogueLog.error("Error during dialogue execution", exception);
             cause = ResultUtils.toJson(exception);
         }
-        mDialogLog.info("Ending dialog");
+        mDialogueLog.info("Ending dialogue");
 
         // Build the JSON result returned to the calling application/context.
         JsonObjectBuilder resultObjectBuilder = JsonUtils.createObjectBuilder();
