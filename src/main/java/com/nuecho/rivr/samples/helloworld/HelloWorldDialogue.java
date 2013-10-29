@@ -40,8 +40,8 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
         mDialogueLog.info("Starting dialogue");
         try {
             // Play a prompt
-            InteractionTurn turn = newInteractionBuilder("hello").addPrompt(new SynthesisText("Hello World!")).build();
-            VoiceXmlInputTurn inputTurn = DialogueUtils.doTurn(context, turn);
+            Interaction turn = newInteraction("hello").addPrompt(new SpeechSynthesis("Hello World!")).build();
+            VoiceXmlInputTurn inputTurn = DialogueUtils.doTurn(turn, context);
 
             // Handling hangup or error events
             if (hasEvent(CONNECTION_DISCONNECT_HANGUP, inputTurn.getEvents())) {
@@ -62,8 +62,8 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
         // Build the JSON result returned to the calling application/context.
         JsonObjectBuilder resultObjectBuilder = JsonUtils.createObjectBuilder();
         resultObjectBuilder.add(CAUSE_PROPERTY, cause);
-        VariableDeclarationList variables = VariableDeclarationList.create(resultObjectBuilder.build());
+        VariableList variables = VariableList.create(resultObjectBuilder.build());
 
-        return new VoiceXmlExitTurn("result", variables);
+        return new Exit("result", variables);
     }
 }
