@@ -9,7 +9,7 @@ import org.slf4j.*;
 
 import com.nuecho.rivr.core.channel.synchronous.step.*;
 import com.nuecho.rivr.core.util.*;
-import com.nuecho.rivr.voicexml.rendering.voicexml.*;
+import com.nuecho.rivr.voicexml.dialogue.*;
 import com.nuecho.rivr.voicexml.test.*;
 import com.nuecho.rivr.voicexml.turn.first.*;
 import com.nuecho.rivr.voicexml.turn.last.*;
@@ -25,7 +25,7 @@ public class DialogueTests {
 
     @Before
     public void init() {
-        mDialogueChannel = new VoiceXmlTestDialogueChannel("Dialog Tests", TimeValue.seconds(5));
+        mDialogueChannel = new VoiceXmlTestDialogueChannel("Dialog Tests", Duration.seconds(5));
     }
 
     @Test

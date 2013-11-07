@@ -5,7 +5,7 @@
 package com.nuecho.rivr.samples.helloworld;
 
 import static com.nuecho.rivr.voicexml.turn.input.VoiceXmlEvent.*;
-import static com.nuecho.rivr.voicexml.turn.output.interaction.InteractionBuilder.*;
+import static com.nuecho.rivr.voicexml.turn.output.Interaction.Builder.*;
 import static com.nuecho.rivr.voicexml.util.json.JsonUtils.*;
 
 import javax.json.*;
@@ -14,13 +14,12 @@ import org.slf4j.*;
 
 import com.nuecho.rivr.core.dialogue.*;
 import com.nuecho.rivr.voicexml.dialogue.*;
-import com.nuecho.rivr.voicexml.rendering.voicexml.*;
 import com.nuecho.rivr.voicexml.turn.*;
 import com.nuecho.rivr.voicexml.turn.first.*;
 import com.nuecho.rivr.voicexml.turn.input.*;
 import com.nuecho.rivr.voicexml.turn.last.*;
+import com.nuecho.rivr.voicexml.turn.output.*;
 import com.nuecho.rivr.voicexml.turn.output.audio.*;
-import com.nuecho.rivr.voicexml.turn.output.interaction.*;
 import com.nuecho.rivr.voicexml.util.*;
 import com.nuecho.rivr.voicexml.util.json.*;
 
@@ -40,7 +39,7 @@ public final class HelloWorldDialogue implements VoiceXmlDialogue {
         mDialogueLog.info("Starting dialogue");
         try {
             // Play a prompt
-            Interaction turn = newInteraction("hello").addPrompt(new SpeechSynthesis("Hello World!")).build();
+            Interaction turn = interaction("hello").addPrompt(new SpeechSynthesis("Hello World!")).build();
             VoiceXmlInputTurn inputTurn = DialogueUtils.doTurn(turn, context);
 
             // Handling hangup or error events
