@@ -4,8 +4,8 @@
 
 package com.nuecho.rivr.samples.helloworld;
 
+import static com.nuecho.rivr.voicexml.turn.OutputTurns.*;
 import static com.nuecho.rivr.voicexml.turn.input.VoiceXmlEvent.*;
-import static com.nuecho.rivr.voicexml.turn.output.Interaction.Builder.*;
 import static com.nuecho.rivr.voicexml.util.json.JsonUtils.*;
 
 import javax.json.*;
