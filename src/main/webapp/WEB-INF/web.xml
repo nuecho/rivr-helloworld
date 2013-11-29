@@ -18,17 +18,17 @@
     </init-param>
 
     <init-param>
-      <param-name>com.nuecho.rivr.voicexml.sessionScanPeriod</param-name>
+      <param-name>com.nuecho.rivr.core.sessionScanPeriod</param-name>
       <param-value>2m</param-value>
     </init-param>
 
     <init-param>
-      <param-name>com.nuecho.rivr.voicexml.sessionTimeout</param-name>
+      <param-name>com.nuecho.rivr.core.sessionTimeout</param-name>
       <param-value>30m</param-value>
     </init-param>
 
     <init-param>
-      <param-name>com.nuecho.rivr.voicexml.dialogueTimeout</param-name>
+      <param-name>com.nuecho.rivr.core.dialogueTimeout</param-name>
       <param-value>5m</param-value>
     </init-param>
 
